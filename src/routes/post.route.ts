@@ -13,9 +13,9 @@ const router = Router();
 
 router.get("/", authenticate, getPosts); // Get all posts
 router.post("/", authenticate, createPost); // Create a post
-router.post("/:id", updatePost); // Update a post
+router.post("/:id", authenticate, updatePost); // Update a post
 router.get("/:id", getPost); // Read a post
-router.delete("/:id", deletePost); // Delete a post
+router.delete("/:id", authenticate, deletePost); // Delete a post
 router.get("/:id/images", getPostImageUrls); // Get image urls of post
 
 export default router;
