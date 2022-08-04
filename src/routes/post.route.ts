@@ -67,9 +67,9 @@ router.get("/", authenticate, getPosts); // Get all posts
  * @apiVersion  0.0.1
  *
  * @apiHeader  {String} JWT token of the user is required
- * @apiParam   {String} Title Title of the post
- * @apiParam   {String} Body Body of the post
- * @apiParam   {String} Files Images for the post
+ * @apiBody   {String} Title Title of the post
+ * @apiBody   {String} Body Body of the post
+ * @apiBody   {Files} Files Images for the post
  *
  * @apiSuccess (200) {json} Returns the newly created post.
  *
@@ -99,15 +99,16 @@ router.post("/", authenticate, createPost); // Create a post
 
 /**
  *
- * @api {POST} /api/posts/ Update a Post
+ * @api {POST} /api/posts/:id Update a Post
  * @apiName Blog API
  * @apiGroup Posts
  * @apiVersion  0.0.1
  *
  * @apiHeader  {String} JWT token of the user is required
- * @apiParam   {String} Title Title of the post
- * @apiParam   {String} Body Body of the post
- * @apiParam   {String} Files Images for the post
+ * @apiParam   {String} id ID of the post
+ * @apiBody   {String} Title Title of the post
+ * @apiBody   {String} Body Body of the post
+ * @apiBody   {String} Files Images for the post
  *
  * @apiSuccess (200) {json} Returns the updated post.
  *
@@ -137,7 +138,7 @@ router.post("/:id", authenticate, updatePost); // Update a post
 
 /**
  *
- * @api {GET} /api/posts/ Get a Post by it's ID
+ * @api {GET} /api/posts/:id Get a Post by it's ID
  * @apiName Blog API
  * @apiGroup Posts
  * @apiVersion  0.0.1
@@ -172,7 +173,7 @@ router.get("/:id", getPost); // Read a post
 
 /**
  *
- * @api {DELETE} /api/posts/ Delete a Post by it's ID (owned by the logged in user)
+ * @api {DELETE} /api/posts/:id Delete a Post by it's ID (owned by the logged in user)
  * @apiName Blog API
  * @apiGroup Posts
  * @apiVersion  0.0.1
@@ -207,7 +208,7 @@ router.delete("/:id", authenticate, deletePost); // Delete a post
 
 /**
  *
- * @api {GET} /api/posts/ Get image urls of a post.
+ * @api {GET} /api/posts/:id/images Get image urls of a post.
  * @apiName Blog API
  * @apiGroup Posts
  * @apiVersion  0.0.1

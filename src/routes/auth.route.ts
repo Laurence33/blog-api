@@ -16,8 +16,8 @@ const router = Router();
  * @apiGroup Authentication
  * @apiVersion  0.0.1
  *
- * @apiParam  {String} username Username for login
- * @apiParam  {String} password Password for login
+ * @apiBody  {String} username Username for login
+ * @apiBody  {String} password Password for login
  *
  * @apiSuccess (200) {json} Login Success User have logged in successfully
  *
@@ -39,8 +39,8 @@ router.post("/login", validateLoginDetails, login);
  * @apiGroup Authentication
  * @apiVersion  0.0.1
  *
- * @apiParam  {Header} x-auth-token JWT token of user
- * @apiParam  {Cookie} refresh-token JWT Refresh token of user
+ * @apiHeader  {String} x-auth-token JWT token of user
+ * @apiHeader  {Cookie} refresh-token JWT Refresh token of user
  *
  * @apiSuccess (204) No Content User has been logged out
  *
@@ -55,7 +55,7 @@ router.delete("/logout", logout);
  * @apiGroup Authentication
  * @apiVersion  0.0.1
  *
- * @apiParam  {Cookie} refresh-token Refresh token of the user
+ * @apiHeader  {Cookie} refresh-token Refresh token of the user
  *
  * @apiSuccess (200) {json} Tokens are successfully refresh
  *
@@ -77,8 +77,8 @@ router.post("/refresh", refreshToken);
  * @apiGroup Authentication
  * @apiVersion  0.0.1
  *
- * @apiParam  {String} username Username for login
- * @apiParam  {String} password Password for login
+ * @apiBody  {String} username Username for login
+ * @apiBody  {String} password Password for login
  *
  * @apiSuccess (200) {json} Registration Successful
  *

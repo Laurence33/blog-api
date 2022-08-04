@@ -6,15 +6,15 @@ const searchRouter = Router();
 
 /**
  *
- * @api {POST} /api/search/ Search/Filter Posts
+ * @api {POST} /api/search/?keyword=:keyword&startDate=:startDate&endDate=:endDate&limit=:limit Search/Filter Posts
  * @apiName Blog API
  * @apiGroup Search
  * @apiVersion  0.0.1
  *
- * @apiParam   {String} keyword Optional Keyword to match the title or body of a post
- * @apiParam   {Date} startDate Optional Starting date to search for
- * @apiParam   {Date} sendDate Optional Ending date to search for
- * @apiParam   {Number} limit Optional Limit the result to return, Default to 10
+ * @apiQuery   {String} keyword Optional Keyword to match the title or body of a post
+ * @apiQuery   {Date} startDate Optional Starting date to search for
+ * @apiQuery   {Date} endDate Optional Ending date to search for
+ * @apiQuery   {Number} limit Optional Limit the result to return, Default to 10
  *
  * @apiSuccess (200) {json} Returns the list of matching posts.
  *
