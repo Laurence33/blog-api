@@ -1,8 +1,11 @@
 import { default as mongoose } from "mongoose";
+import EventEmitter from "events";
 
-export const connectMongoDB = () => {
+export const connectMongoDB = async () => {
+  const mongoEvent = new EventEmitter();
   try {
-    mongoose.connect(process.env.MONGODB_URI as string);
+    await mongoose.connect(process.env.MONGODB_URI as string);
+    mongoEvent.emit("mongoose connected");
     console.log("Connected to MongoDB");
   } catch (err) {
     console.log("Error connecting to MongoDB:", err);

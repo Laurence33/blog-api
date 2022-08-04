@@ -10,6 +10,7 @@ import { internalServerError } from "../utils/500response";
 
 export async function createLogin(req: Request, res: Response) {
   const { username, password } = req.body;
+
   try {
     // 1. Check if the login exists
     const exists = await findLoginByUsername(username);
@@ -28,15 +29,14 @@ export async function createLogin(req: Request, res: Response) {
       passwordDigest: passwordDigest,
     });
     // 4. Save the new login
-    user.save();
+    // user.save();
     // 5. Return an OK response
     return res
       .status(200)
       .json({ error: false, message: "User has been created successfully." });
   } catch (error: any) {
     console.log(error);
-
-    return internalServerError(res);
+    return internalServerError(res, error.message);
   }
 }
 

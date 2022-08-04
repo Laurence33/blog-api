@@ -3,6 +3,7 @@ import {
   createPost,
   deletePost,
   getPost,
+  getPostImageUrls,
   getPosts,
   updatePost,
 } from "../controllers/PostController";
@@ -10,11 +11,11 @@ import { authenticate } from "../middlewares/authenticate";
 
 const router = Router();
 
-router.get("/", authenticate, getPosts);
-router.post("/", authenticate, createPost);
-router.post("/:id", updatePost);
-router.get("/:id", getPost);
-router.delete("/:id", deletePost);
-// router.get("/:id/images", getImages); // TODO: Allow adding of photos to post
+router.get("/", authenticate, getPosts); // Get all posts
+router.post("/", authenticate, createPost); // Create a post
+router.post("/:id", updatePost); // Update a post
+router.get("/:id", getPost); // Read a post
+router.delete("/:id", deletePost); // Delete a post
+router.get("/:id/images", getPostImageUrls); // Get image urls of post
 
 export default router;

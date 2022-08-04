@@ -22,5 +22,6 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
   // 3. set the userid to req.body
   req.body["uid"] = decoded.id;
   // 4. next()
+
   next();
 }

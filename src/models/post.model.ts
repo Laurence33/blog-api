@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Image } from "./image.model";
 const SchemaTypes = mongoose.SchemaTypes;
 
 const PostSchema = new mongoose.Schema(
@@ -25,6 +26,12 @@ const PostSchema = new mongoose.Schema(
       type: Date,
       default: () => Date.now(),
     },
+    images: [
+      {
+        type: SchemaTypes.ObjectId,
+        ref: "photo.files",
+      },
+    ],
   },
   { timestamps: true }
 );

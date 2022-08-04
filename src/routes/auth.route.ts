@@ -15,6 +15,6 @@ router.delete("/logout", logout);
 
 router.post("/refresh", refreshToken);
 
-router.post("/register", createLogin);
+router.post("/register", validateLoginDetails, createLogin);
 
 export default router;

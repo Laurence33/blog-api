@@ -4,8 +4,6 @@ import dotenv from "dotenv";
 import apiRouter from "./src/routes/index";
 import fs from "fs";
 import { connectMongoDB } from "./src/services/MongoDbClient";
-import { Post } from "./src/models/post.model";
-import { Login } from "./src/models/login.model";
 
 // Load env variables
 dotenv.config();
@@ -23,6 +21,7 @@ const port = process.env.EXPRESS_PORT || 8080;
 
 // Parse the body
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 // Parse the cookies
 app.use(cookieParser());
 
