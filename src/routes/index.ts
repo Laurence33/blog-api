@@ -8,9 +8,9 @@ import searchRouter from "./search.route";
 
 const router = Router();
 
-router.use("/auth", authRouter);
-router.use("/posts", postRouter);
-router.use("/images", imageRouter);
-router.use("/search", searchRouter);
+router.use("/auth", authRouter); // Route for register, login, logout, refresh
+router.use("/posts", postRouter); // Route for Posts CRUD, and getting urls of image
+router.use("/images", imageRouter); // Route for downloading Images
+router.use("/search", searchRouter); // Route for searching/filtering of posts
 
 export default router;
