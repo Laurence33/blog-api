@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { uploadFilesMiddleware } from "../middlewares/upload";
-import { getImageById, getImageUrls } from "../services/ImageService";
+import { getImageUrls } from "../services/ImageService";
 import {
   createNewPost,
   deletePostById,
@@ -8,15 +8,37 @@ import {
   getPostById,
   updateOwnPost,
 } from "../services/PostService";
-import { internalServerError } from "../utils/500response";
+import {
+  create200Response,
+  create201Response,
+  create204Response,
+  create400Response,
+  create404Response,
+  create500Response,
+  HttpResponse,
+} from "../utils/ResponseService";
+
+function adaptResponse(res: Response, httpResponse: HttpResponse) {
+  res.header("Content-Type", httpResponse.headers.contentType);
+  if (httpResponse.data) {
+    return res.json({
+      message: httpResponse.message,
+      code: httpResponse.code,
+      data: httpResponse.data,
+    });
+  }
+  return res.json({
+    message: httpResponse.message,
+    code: httpResponse.code,
+  });
+}
 
 export async function getPosts(req: Request, res: Response) {
   try {
     const posts = await getOwnPosts(req.body.uid);
-    return res.status(200).json(posts);
+    return adaptResponse(res, create201Response(posts));
   } catch (error: any) {
-    console.log(error);
-    return internalServerError(res, error.message);
+    return adaptResponse(res, create500Response("Internal Server Error"));
   }
 }
 
@@ -24,40 +46,35 @@ export async function createPost(req: Request, res: Response) {
   const uid = req.body.uid;
   try {
     await uploadFilesMiddleware(req, res);
-    console.log(req.files);
-    if (req.files && req.files.length <= 0) {
-      return res
-        .status(400)
-        .send({ message: "You must select at least 1 file." });
+    if (!req.files || (req.files && req.files.length <= 0)) {
+      return adaptResponse(
+        res,
+        create400Response("You must select at least 1 file.")
+      );
     }
-
     const newPost = await createNewPost({
       ...req.body,
       uid,
       images: req.files,
     });
-    return res.status(200).json({
-      error: false,
-      message: "Post created successfully",
-      post: newPost,
-    });
+    return adaptResponse(
+      res,
+      create200Response("Post has been created", newPost)
+    );
   } catch (error: any) {
-    console.log(error);
-    return internalServerError(res, error.message);
+    return adaptResponse(res, create500Response("Something went wrong."));
   }
 }
 
 export async function updatePost(req: Request, res: Response) {
   try {
     const updatedPost = await updateOwnPost(req.body);
-    return res.status(200).json({
-      error: false,
-      message: "Post updated successfully",
-      post: updatedPost,
-    });
+    return adaptResponse(
+      res,
+      create204Response("Post has been updated.", updatedPost)
+    );
   } catch (error: any) {
-    console.log(error);
-    return internalServerError(res, error.message);
+    return adaptResponse(res, create500Response("Something went wrong."));
   }
 }
 
@@ -67,11 +84,11 @@ export async function getPost(req: Request, res: Response) {
     const post = await getPostById(postId);
 
     if (!post) {
-      return res.status(404).json({ error: true, message: "Post not found" });
+      return adaptResponse(res, create404Response());
     }
-    return res.status(200).json({ error: false, post: post });
+    return adaptResponse(res, create200Response("Success", post));
   } catch (error: any) {
-    return internalServerError(res, error.message);
+    return adaptResponse(res, create500Response("Something went wrong."));
   }
 }
 
@@ -80,21 +97,11 @@ export async function deletePost(req: Request, res: Response) {
   try {
     const post = await deletePostById(postId);
     if (!post) {
-      return res.status(200).json({
-        error: true,
-        message: "Failed to delete post, post not found.",
-      });
+      return adaptResponse(res, create404Response());
     }
-    return res.status(200).json({ error: false, post: post });
+    return adaptResponse(res, create200Response("Post has been deleted", post));
   } catch (error: any) {
-    if (error.message.includes("Cast to ObjectId failed")) {
-      return res.status(404).json({
-        error: true,
-        message: "Failed to delete post, post not found.",
-      });
-    }
-
-    return internalServerError(res, error.message);
+    return adaptResponse(res, create500Response("Something went wrong."));
   }
 }
 
@@ -105,6 +112,6 @@ export async function getPostImageUrls(req: Request, res: Response) {
     const urls = await getImageUrls(post?.images as string[]);
     return res.status(200).json({ error: false, urls });
   } catch (error: any) {
-    internalServerError(res, error.message);
+    return adaptResponse(res, create500Response("Something went wrong."));
   }
 }
